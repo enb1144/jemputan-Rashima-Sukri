@@ -86,7 +86,7 @@
     .modal-overlay.show .modal-box { transform: scale(1); }
     .contact-modal-box { max-width: 360px; padding: 28px 22px 22px; position: relative; }
     .location-modal-box { max-width: 380px; padding: 28px 18px 20px; position: relative; }
-    .modal-close { position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; padding: 0; border: none; background: transparent; color: #8c8178; font-size: 15px; cursor: pointer; line-height: 1; border-radius: 0; box-shadow: none; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .modal-close { position: absolute; top: 0; right: 0; width: 26px; height: 26px; padding: 0; border: none; background: transparent; color: #8c8178; font-size: 16px; cursor: pointer; line-height: 1; border-radius: 0; box-shadow: none; display: flex; align-items: center; justify-content: center; z-index: 2; }
     .map-preview { width: 100%; height: 210px; border: 1px solid rgba(90,74,65,0.35); border-radius: 12px; overflow: hidden; margin: 14px 0 16px; background: #f6f1ea; }
     .map-preview iframe { width: 100%; height: 100%; border: 0; display: block; }
     .map-choice-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
@@ -98,6 +98,7 @@
 
     @media (max-width: 600px) {
       body, #main-container, .full-page { height: 100svh; }
+      .card-box { max-height: 85svh; }
       .music-control { top: 14px; right: 14px; bottom: auto; }
     }
 
