@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Walimatul Urus | Rashima & Sukri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* CSS STRUKTUR (LAYOUT) */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      height: 100vh; overflow: hidden;
+      /* Pastikan fail image.jpeg wujud dalam folder anda */
+      background-image: url('image.jpeg'); 
+      background-size: cover; background-position: center; 
+      background-repeat: no-repeat; background-attachment: fixed;
+    }
+    #main-container { height: 100vh; width: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; position: relative; z-index: 1; }
+    .full-page { height: 100vh; width: 100%; scroll-snap-align: start; scroll-snap-stop: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; }
+    
+    /* COVER & COMPONENTS */
+    #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(253, 251, 247, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: transform 1s ease-in-out; }
+    .hide-cover { transform: translateY(-100%); }
+    .initials-container { position: relative; height: 250px; width: 180px; margin: 0 auto 10px; pointer-events: none; }
+    .big-letter { font-family: 'Cinzel', serif; font-size: 220px; color: #b08d55; position: absolute; opacity: 0.8; text-shadow: 2px 2px 0px rgba(255,255,255,0.8); line-height: 1; }
+    .letter-1 { top: 0px; left: -10px; z-index: 1; }
+    .letter-2 { bottom: 10px; right: -10px; z-index: 2; }
+    .btn-open { margin-top: 50px; padding: 15px 40px; background: white; border: 1px solid #b08d55; color: #5a4a41; font-family: 'Playfair Display', serif; letter-spacing: 2px; font-size: 14px; cursor: pointer; border-radius: 50px; text-transform: uppercase; box-shadow: 0 10px 20px rgba(176, 141, 85, 0.15); transition: 0.3s; }
+    .btn-open:active { transform: scale(0.95); background: #f0f0f0; }
+
+    /* CARD BOX */
+    .card-box {
+      background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(8px); border-radius: 20px;
+      padding: 30px 25px;
+      width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.7);
+      opacity: 0; transform: scale(0.9); transition: all 0.6s ease-out; display: flex; flex-direction: column;
+      max-height: 85vh; overflow-y: auto; scrollbar-width: none;
+    }
+    .card-box::-webkit-scrollbar { display: none; }
+    .full-page.active .card-box { opacity: 1; transform: scale(1); }
+
+    /* STYLE KHAS UNTUK GAMBAR BISMILLAH */
+    .bismillah-img {
+      width: 120px;       
+      max-width: 150%;    
+      height: 70%;
+      display: block;
+      margin: -30px auto 0px auto; 
+      mix-blend-mode: multiply; 
+      opacity: 0.9;
+    }
+
+    /* UTILS */
+    .action-row { display: flex; justify-content: center; align-items: center; column-gap: 7px; row-gap: 0; flex-wrap: nowrap; margin-top: 15px; width: 100%; }
+    .action-btn { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; background-color: #5a4a41; color: white; padding: 10px 8px; border-radius: 50px; text-decoration: none; font-size: 11px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: none; font-family: 'Montserrat', sans-serif; cursor: pointer; white-space: nowrap; }
+    .action-btn:active { transform: scale(0.96); }
+    .wa-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; background: rgba(255,255,255,0.9); border: 1px solid #b08d55; color: #5a4a41; padding: 12px 18px; margin: 8px 0; border-radius: 12px; text-decoration: none; font-size: 13px; text-align: left; }
+    .wa-icon { color: #25D366; font-size: 22px; }
+    .scroll-hint { position: absolute; bottom: 15px; font-size: 11px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.8); animation: bounce 2s infinite; opacity: 0.8; pointer-events: none; }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+    .music-control { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: rgba(255,255,255,0.9); border: 1px solid #b08d55; border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 100; color: #b08d55; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; }
+    .spin { animation: spin 4s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .arrival-text { font-size: 0 !important; }
+    .arrival-text::after { content: '🤵🏻👰🏻 Ketibaan Mempelai: 2:30 PM'; font-size: 14px; }
+
+    /* FEED & MODAL */
+    #wishes-feed { width: 100%; height: 200px; overflow-y: scroll; background: rgba(255,255,255,0.6); border: 1px solid #ddd; border-radius: 10px; padding: 10px; margin-bottom: 20px; text-align: left; font-size: 13px; scrollbar-width: none; }
+    #wishes-feed::-webkit-scrollbar { display: none; }
+    .wish-item { background: white; padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 3px solid #ccc; animation: fadeIn 0.5s ease; word-wrap: break-word; }
+    .wish-hadir { border-left-color: #4CAF50; } .wish-tak-hadir { border-left-color: #F44336; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .rsvp-input { width: 100%; padding: 14px; margin: 5px 0 15px 0; border-radius: 12px; border: 1px solid #b08d55; background: rgba(255, 255, 255, 0.9); color: #5a4a41; outline: none; font-size: 14px; }
+    .btn-primary { background-color: #5a4a41; color: white; width: 100%; border: none; padding: 14px; border-radius: 50px; cursor: pointer; font-weight: 600; margin-top: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 20000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.3s; }
+    .modal-overlay.show { display: flex; opacity: 1; }
+    .modal-box { background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(10px); width: 100%; max-width: 320px; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); transform: scale(0.8); transition: transform 0.3s; }
+    .modal-overlay.show .modal-box { transform: scale(1); }
+    .contact-modal-box { max-width: 360px; padding: 28px 22px 22px; position: relative; }
+    .location-modal-box { max-width: 380px; padding: 28px 18px 20px; position: relative; }
+    .modal-close { position: absolute; top: 10px; right: 12px; width: 26px; height: 26px; border: none; background: rgba(255,255,255,0.96); color: #8c8178; font-size: 14px; cursor: pointer; line-height: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .map-preview { width: 100%; height: 210px; border: 1px solid rgba(90,74,65,0.35); border-radius: 12px; overflow: hidden; margin: 14px 0 16px; background: #f6f1ea; }
+    .map-preview iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .map-choice-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .map-choice-btn { flex: 1; min-width: 135px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 10px; border-radius: 14px; border: 1px solid #b08d55; background: rgba(255,255,255,0.92); color: #5a4a41; text-decoration: none; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; }
+    .map-choice-btn i { color: #b08d55; font-size: 18px; }
+    .modal-btn-group { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-btn { flex: 1; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+    .btn-yes { background: #4CAF50; } .btn-no { background: #F44336; }
+
+    @media (max-width: 380px) {
+      .action-row { column-gap: 5px; }
+      .action-btn { padding: 9px 5px; font-size: 9.5px; gap: 4px; }
+      .contact-modal-box { padding-left: 18px; padding-right: 18px; }
+      .location-modal-box { padding-left: 14px; padding-right: 14px; }
+      .map-preview { height: 190px; }
+      .map-choice-btn { min-width: 120px; font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop preload="auto"><source src="lagu.mp3" type="audio/mpeg"></audio>
+
+<div id="cover">
+  <div class="initials-container">
+    <div class="big-letter letter-1">R</div>
+    <div class="big-letter letter-2">S</div>
+  </div>
+  
+  <div style="font-family: 'Great Vibes', cursive; font-size: 32px; color: #5a4a41; margin-top: -20px; z-index: 3;">
+    Rashima & Sukri
+  </div>
+  <p style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-size: 12px; margin-top: 10px; color: #8c8178;">
+    01 . 01 . 2027
+  </p>
+  <button id="btnOpen" class="btn-open" type="button">Buka Undangan</button>
+</div>
+
+<div id="musicControl" class="music-control" style="opacity:0;"><i id="musicIcon" class="fas fa-compact-disc"></i></div>
+
+<div id="rsvpModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3 style="margin-top:0; color:#5a4a41;">Pengesahan Kehadiran</h3>
+    <p style="font-size:14px; color:#666;">Adakah anda akan hadir ke majlis ini?</p>
+    <div class="modal-btn-group">
+      <button class="modal-btn btn-yes" onclick="submitRSVP('hadir')"><i class="fas fa-check"></i> Ya, Hadir</button>
+      <button class="modal-btn btn-no" onclick="submitRSVP('tidak')"><i class="fas fa-times"></i> Maaf, Tidak</button>
+    </div>
+    <div style="margin-top:15px; font-size:12px; color:#999; cursor:pointer;" onclick="closeModal()">Batal</div>
+  </div>
+</div>
+
+<div id="contactModal" class="modal-overlay" onclick="closeContactModal(event)">
+  <div class="modal-box contact-modal-box" onclick="event.stopPropagation()">
+    <button type="button" class="modal-close" onclick="closeContactModal()" aria-label="Tutup popup hubungi">
+      <i class="fas fa-times"></i>
+    </button>
+    <div style="font-family: 'Cinzel', serif; font-size: 17px; color: #b08d55; font-weight: 600; letter-spacing: 2px; margin-bottom: 12px; border-top: 1px solid rgba(176, 141, 85, 0.3); border-bottom: 1px solid rgba(176, 141, 85, 0.3); padding: 10px 0;">Hubungi</div>
+    <div style="margin-bottom:12px; color:#666; font-size:13px; font-family: 'Montserrat', sans-serif;">Klik untuk WhatsApp</div>
+
+    <a href="https://wa.me/60195354187" target="_blank" class="wa-btn">
+      <div><span style="font-family: 'Montserrat', sans-serif;">En Raydun (Ayah)</span><br><small style="color:#777;">019-535 4187</small></div>
+      <i class="fab fa-whatsapp wa-icon"></i>
+    </a>
+    <a href="https://wa.me/60146643159" target="_blank" class="wa-btn">
+      <div><span style="font-family: 'Montserrat', sans-serif;">Pn Sainah (Ibu)</span><br><small style="color:#777;">014-664 3159</small></div>
+      <i class="fab fa-whatsapp wa-icon"></i>
+    </a>
+    <a href="https://wa.me/60145539024" target="_blank" class="wa-btn">
+      <div><span style="font-family: 'Montserrat', sans-serif;">Salim (Abang)</span><br><small style="color:#777;">014-553 9024</small></div>
+      <i class="fab fa-whatsapp wa-icon"></i>
+    </a>
+  </div>
+</div>
+
+<div id="locationModal" class="modal-overlay" onclick="closeLocationModal(event)">
+  <div class="modal-box location-modal-box" onclick="event.stopPropagation()">
+    <button type="button" class="modal-close" onclick="closeLocationModal()" aria-label="Tutup popup lokasi">
+      <i class="fas fa-times"></i>
+    </button>
+    <div style="font-family: 'Cinzel', serif; font-size: 17px; color: #b08d55; font-weight: 600; letter-spacing: 2px; margin-bottom: 12px; border-top: 1px solid rgba(176, 141, 85, 0.3); border-bottom: 1px solid rgba(176, 141, 85, 0.3); padding: 10px 0;">Lokasi</div>
+    <div style="font-family: 'Montserrat', sans-serif; color:#3f4656; font-weight: 600; font-size: 14px; line-height: 1.5;">
+      Dewan SJKC Yuk Kong
+    </div>
+    <div style="font-family: 'Montserrat', sans-serif; color:#5f6675; font-size: 13px; line-height: 1.45; margin-top: 3px;">
+      Keningau, Sabah
+    </div>
+
+    <div class="map-preview">
+      <iframe
+        title="Peta Dewan SJKC Yuk Kong, Keningau, Sabah"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q=5.323654,116.121178&z=16&output=embed">
+      </iframe>
+    </div>
+
+    <div class="map-choice-row">
+      <a href="https://www.google.com/maps/place/SJK+(C)+Yuk+Kong+Keningau/@5.3236593,116.1186031,1082m/data=!3m2!1e3!4b1!4m6!3m5!1s0x323ce8c5d5536b3b:0x3aacb13cb38a9d92!8m2!3d5.323654!4d116.121178!16s%2Fg%2F1227_1zt?entry=ttu&g_ep=EgoyMDI2MDExMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-choice-btn">
+        <i class="fas fa-map-marked-alt"></i> Google Maps
+      </a>
+      <a href="https://waze.com/ul?ll=5.323654,116.121178&navigate=yes" target="_blank" class="map-choice-btn">
+        <i class="fab fa-waze"></i> Waze
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="main-container">
+
+  <section class="full-page" id="page1">
+    <div class="card-box" style="text-align: center;"> 
+        
+      <img src="bismillah.png" class="bismillah-img" alt="Bismillah">
+
+      <div style="font-family: 'Cinzel', serif; font-weight: 600; font-size: 16px; color: #5a4a41; margin-bottom: 15px; text-align: center;">
+        Assalamualaikum & Salam Sejahtera
+      </div>
+
+      <div style="font-family: 'Playfair Display', sans-serif; font-size: 12px; color: #666; margin-bottom: 5px; text-align: center;">
+        Dengan penuh kesyukuran ke hadrat Allah SWT, kami
+      </div>
+      
+      <div style="font-family: 'Cinzel', serif; font-size: 19px; color: #5a4a41; font-weight: bold; margin-top: 10px; margin-bottom: 10px; text-align: center;">
+        En. Raydun & Pn. Sainah
+      </div>
+      
+      <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: #666; margin-bottom: 5px; text-align: center;">
+        Seikhlas hati menjemput
+      </div>
+
+      <div style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; color: #5a4a41; margin-bottom: 20px; text-align: center;">
+        Tuan / Puan / Encik / Cik ke
+      </div>
+      
+      <div style="font-family: 'Cinzel', serif; font-size: 17px; color: #b08d55; font-weight: 600; letter-spacing: 2px; margin-bottom: 10px; border-top: 1px solid rgba(176, 141, 85, 0.3); border-bottom: 1px solid rgba(176, 141, 85, 0.3); padding: 10px 0; text-align: center;">
+        MAJLIS PERKAHWINAN
+      </div>
+      
+      <div style="font-family: 'Playfair Display', cursive; font-size: 12px; color: #666; line-height: 1.2; margin: 3px 0 6px; text-align: center;">
+        Puteri kami
+      </div>
+
+      <div style="font-family: 'Great Vibes', cursive; font-size: 38px; color: #b08d55; line-height: 1; margin: 0; text-align: center;">
+        Rashima
+      </div>
+
+      <div style="font-family: 'Playfair Display', serif; font-size: 28px; color: #9b6e33; line-height: 1; margin: -2px 0 5px; text-align: center;">
+        &
+      </div>
+
+      <div style="font-family: 'Playfair Display', cursive; font-size: 12px; color: #666; line-height: 1.2; margin: 2px 0 6px; text-align: center;">
+        Pasangannya
+      </div>
+
+      <div style="font-family: 'Great Vibes', cursive; font-size: 38px; color: #b08d55; line-height: 1.15; margin: 0 0 8px -9px; padding-bottom: 6px; border-bottom: 1px solid rgba(176, 141, 80, 0.3); text-align: center;">
+        Sukri
+      </div>
+
+       <div style="font-family: 'Cinzel', sans-serif; font-size: 14px; font-weight: bold; color: #f38b4e; margin-top: 5px; margin-bottom: 10px; text-align: center;">
+        ATURCARA MAJLIS
+      </div>
+
+      <div style="font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: bold; color: #5a4a41; margin-bottom: 8px; text-align: center;">
+        Jumaat, 01 Januari 2027
+      </div>
+
+      <div style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; font-weight: bold; margin-bottom: 15px; text-align: center;">
+        2:00 PM - 6:00 PM
+      </div>
+      
+      <div class="arrival-text" style="font-family: 'Montserrat', sans-serif; font-size: 14px; margin-top: -10px; margin-bottom: 1px; text-align: center;">
+        🤵🏻👰🏻 Ketibaan Mempelai: 2:30PM
+      </div>
+
+      <div style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; margin-top: 15px; text-align: center;">
+        Dewan SJKC Yuk Kong, Keningau, Sabah
+      </div>
+      
+      <div class="action-row">
+        <button type="button" class="action-btn" onclick="openContactModal()">
+          <i class="fas fa-phone"></i> Hubungi
+        </button>
+        <button type="button" class="action-btn" onclick="openLocationModal()">
+          <i class="fas fa-map-marker-alt"></i> Lihat Lokasi
+        </button>
+        <button type="button" class="action-btn" onclick="scrollToGuestbook()">
+          <i class="fas fa-book-open"></i> Buku Tetamu
+        </button>
+      </div>
+
+      <div style="margin-top: 10px; font-size: 11px; color: #b08d55; text-align: center; font-family: 'Montserrat', sans-serif;">
+        Menghitung Hari:
+        <span id="countdown" style="font-weight:bold; color:#5a4a41;">Loading...</span>
+      </div>
+
+    </div>
+    <div class="scroll-hint"><i class="fas fa-chevron-down"></i> Scroll Ke Bawah</div>
+  </section>
+
+  <section class="full-page" id="page-rsvp">
+    <div class="card-box" style="text-align: left;">
+      <div style="font-family: 'Cinzel', serif; font-size: 17px; color: #b08d55; font-weight: 600; letter-spacing: 2px; margin-bottom: 15px; border-top: 1px solid rgba(176, 141, 85, 0.3); border-bottom: 1px solid rgba(176, 141, 85, 0.3); padding: 10px 0; text-align: center;">Buku Tetamu</div>
+      
+      <div id="wishes-feed"><div style="color:#999; text-align:center; padding-top:40px; font-style:italic;">Belum ada ucapan.<br>Jadilah yang pertama!</div></div>
+      
+      <div style="text-align: left; font-size: 12px; font-weight: bold; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Kirim Ucapan & Kehadiran:</div>
+      
+      <input type="text" id="guestName" class="rsvp-input" placeholder="Nama Anda (Wajib)" required>
+      <textarea id="guestWishes" class="rsvp-input" rows="2" placeholder="(Tulis ucapan disini)"></textarea>
+      
+      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px;">
+        
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:12px; font-family: 'Montserrat', sans-serif; white-space: nowrap;">Jumlah Pax:</span>
+          <select id="guestPax" class="rsvp-input" style="width:70px; padding:10px; margin:0;">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+            <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+            <option value="9">9</option><option value="10">10</option>
+          </select>
+        </div>
+
+        <div style="
+            background: rgba(176, 141, 85, 0.15); 
+            border: 1px solid #b08d55; 
+            border-radius: 10px; 
+            padding: 5px 15px; 
+            text-align: center; 
+            min-width: 100px;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+        ">
+          <div style="
+              font-size: 10px; 
+              color: #5a4a41; 
+              font-weight: bold; 
+              text-transform: uppercase; 
+              letter-spacing: 1px;
+              margin-bottom: 2px;
+          ">
+            Jumlah Kehadiran
+          </div>
+
+          <div style="
+              font-size: 18px; 
+              font-weight: bold; 
+              color: #b08d55; 
+              line-height: 1.2;
+          ">
+            <span id="total-count-num">0</span> 
+            <span style="font-size: 15px; color: #5a4a41; margin-left:3px;">ORANG</span>
+          </div>
+        </div>
+        </div>
+      <button class="btn-primary" onclick="openModal()">Hantar Respon</button>
+
+      <div style="margin-top: 22px; border-top: 1px dashed rgba(0,0,0,0.12); padding-top: 16px; text-align: center;">
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; color: #555; line-height: 1.45; font-size: 13px; margin: 0;">
+          "Semoga kehadiran para tetamu akan menyerikan lagi majlis kami dan diberkati Allah S.W.T."
+        </p>
+        <div style="margin-top: 12px;">
+          <div style="font-family: 'Great Vibes', cursive; font-size: 31px; line-height: 1; color: #b08d55;">Terima Kasih</div>
+          <small style="letter-spacing:1px; margin-top:7px; display:block; font-family: 'Montserrat', sans-serif; font-size: 11px;">#RashimaSukri2027</small>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+</div>
+
+<script>
+// SCRIPT UTAMA
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6kncBMeLfM135obIntq4RRfTtgHmAhEDglPc3w1bT4XUpppYk5JiKwB2eIaLZ8AAD/exec'; 
+const feedContainer = document.getElementById('wishes-feed');
+const modal = document.getElementById('rsvpModal');
+const contactModal = document.getElementById('contactModal');
+const locationModal = document.getElementById('locationModal');
+let scrollInterval; 
+
+document.addEventListener('DOMContentLoaded', function() {
+  const btnOpen = document.getElementById('btnOpen');
+  const cover = document.getElementById('cover');
+  const music = document.getElementById('bgMusic');
+  const musicControl = document.getElementById('musicControl');
+  const musicIcon = document.getElementById('musicIcon');
+  let isPlaying = false;
+
+  if (btnOpen) {
+    btnOpen.addEventListener('click', function(e) {
+      e.preventDefault();
+      cover.classList.add('hide-cover');
+      document.getElementById('main-container').scrollTop = 0;
+      setTimeout(() => { musicControl.style.opacity = 1; }, 800);
+      setTimeout(() => { document.getElementById('page1').classList.add('active'); }, 500);
+      if (music) {
+        music.play().then(() => { isPlaying = true; musicIcon.classList.add('spin'); })
+        .catch(err => { musicIcon.classList.remove('spin'); musicIcon.classList.add('fa-volume-mute'); });
+      }
+    });
+  }
+  if (musicControl) {
+    musicControl.addEventListener('click', () => {
+      if(isPlaying) { music.pause(); musicIcon.classList.remove('spin'); musicIcon.classList.add('fa-volume-mute'); } 
+      else { music.play(); musicIcon.classList.add('spin'); musicIcon.classList.remove('fa-volume-mute'); musicIcon.classList.add('fa-compact-disc'); }
+      isPlaying = !isPlaying;
+    });
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.full-page').forEach(el => observer.observe(el));
+  
+  // COUNTDOWN
+  const targetDate = new Date("2027-01-01T14:00:00+08:00").getTime();
+  setInterval(() => {
+    const now = new Date().getTime(); const gap = targetDate - now; const el = document.getElementById('countdown');
+    if(el) { if (gap > 0) { const d = Math.floor(gap / (1000 * 60 * 60 * 24)); const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); el.innerText = `${d} Hari ${h} Jam lagi`; } else { el.innerText = "Alhamdulillah, Majlis Bermula!"; } }
+  }, 1000);
+
+  feedContainer.addEventListener('mouseenter', stopAutoScroll); feedContainer.addEventListener('touchstart', stopAutoScroll);
+  feedContainer.addEventListener('mouseleave', startAutoScroll); feedContainer.addEventListener('touchend', startAutoScroll);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeContactModal();
+      closeLocationModal();
+    }
+  });
+  
+  loadRSVPData(); 
+  setInterval(loadRSVPData, 60000);
+});
+
+function startAutoScroll() { stopAutoScroll(); scrollInterval = setInterval(() => { feedContainer.scrollTop += 1; if (feedContainer.scrollTop >= (feedContainer.scrollHeight / 2)) { feedContainer.scrollTop = 0; } }, 50); }
+function stopAutoScroll() { clearInterval(scrollInterval); }
+
+// FUNGSI LOAD DATA (TELAH DIPERBAIKI UNTUK UPDATE JUMLAH KEHADIRAN)
+function loadRSVPData() {
+  if (SCRIPT_URL.includes('GANTI')) return;
+  fetch(SCRIPT_URL).then(r => r.json()).then(json => {
+    const data = json.data; if (!data || data.length === 0) return;
+    stopAutoScroll(); 
+    feedContainer.innerHTML = ''; 
+    
+    let currentTotal = 0; // Reset kiraan
+
+    data.reverse().forEach(row => {
+      // row[3] = status, row[4] = pax
+      let pax = parseInt(row[4]);
+      if (isNaN(pax)) pax = 0;
+
+      if (row[3] === 'hadir') {
+        currentTotal += pax;
+      }
+      appendWishToFeed(row[1], row[2], row[3], pax);
+    });
+
+    // UPDATE DISPLAY KIRAAN
+    const displayEl = document.getElementById('total-count-num');
+    if (displayEl) {
+      displayEl.innerText = currentTotal;
+    }
+
+    if (feedContainer.scrollHeight > feedContainer.clientHeight) { Array.from(feedContainer.children).forEach(item => feedContainer.appendChild(item.cloneNode(true))); startAutoScroll(); }
+  }).catch(e => console.error(e));
+}
+
+function appendWishToFeed(n, w, s, p) {
+  const hadir = s === 'hadir';
+  const d = document.createElement('div');
+  d.classList.add('wish-item', hadir ? 'wish-hadir' : 'wish-tak-hadir');
+
+  const header = document.createElement('div');
+  header.style.cssText = 'font-weight:bold;font-size:13px;color:#333;margin-bottom:2px;';
+  header.appendChild(document.createTextNode(String(n || 'Tetamu') + ' '));
+
+  const status = document.createElement('span');
+  status.style.cssText = `font-size:11px;font-weight:normal;color:${hadir ? '#4CAF50' : '#F44336'};`;
+  const icon = document.createElement('i');
+  icon.className = `fas fa-${hadir ? 'check' : 'times'}-circle`;
+  status.appendChild(icon);
+  status.appendChild(document.createTextNode(hadir ? ` Hadir (${p} Pax)` : ' Tidak Hadir'));
+  header.appendChild(status);
+
+  const wish = document.createElement('div');
+  wish.style.cssText = 'color:#555;font-size:12px;font-style:italic;';
+  wish.textContent = `"${w || 'Tiada ucapan'}"`;
+
+  d.appendChild(header);
+  d.appendChild(wish);
+  feedContainer.appendChild(d);
+}
+
+function openModal() { if(!document.getElementById('guestName').value.trim()){alert("Sila masukkan nama.");return;} modal.style.display='flex'; setTimeout(()=>modal.classList.add('show'),10); }
+function closeModal() { modal.classList.remove('show'); setTimeout(()=>modal.style.display='none',300); }
+
+function openContactModal() {
+  contactModal.style.display = 'flex';
+  setTimeout(() => contactModal.classList.add('show'), 10);
+}
+
+function closeContactModal(event) {
+  if (event && event.target !== contactModal) return;
+  contactModal.classList.remove('show');
+  setTimeout(() => contactModal.style.display = 'none', 300);
+}
+
+function openLocationModal() {
+  locationModal.style.display = 'flex';
+  setTimeout(() => locationModal.classList.add('show'), 10);
+}
+
+function closeLocationModal(event) {
+  if (event && event.target !== locationModal) return;
+  locationModal.classList.remove('show');
+  setTimeout(() => locationModal.style.display = 'none', 300);
+}
+
+function scrollToGuestbook() {
+  const guestbookSection = document.getElementById('page-rsvp');
+  if (guestbookSection) {
+    guestbookSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// FUNGSI SUBMIT (TELAH DIPERBAIKI UNTUK CLEAR UCAPAN)
+function submitRSVP(c) {
+  const btn = document.querySelector('.btn-primary'); 
+  const orig = btn.innerText; 
+  btn.innerText="Sedang Hantar..."; 
+  btn.disabled=true; 
+  closeModal();
+
+  const fd = new FormData(); 
+  fd.append('nama',document.getElementById('guestName').value); 
+  fd.append('ucapan',document.getElementById('guestWishes').value); 
+  fd.append('status',c); 
+  fd.append('pax',c==='hadir'?document.getElementById('guestPax').value:0);
+
+  fetch(SCRIPT_URL,{method:'POST',body:fd})
+    .then(r=>r.json())
+    .then(res=>{ 
+      if(res.result==='success'){ 
+        alert("Terima kasih!"); 
+        loadRSVPData(); 
+        
+        // KOSONGKAN RUANGAN SELEPAS HANTAR
+        document.getElementById('guestName').value='';   
+        document.getElementById('guestWishes').value=''; 
+
+      } else {
+        alert("Masalah teknikal."); 
+      }
+    })
+    .catch(e=>alert("Gagal hantar."))
+    .finally(()=>{ 
+      btn.innerText=orig; 
+      btn.disabled=false; 
+    });
+}
+</script>
+
+</body>
+</html>
