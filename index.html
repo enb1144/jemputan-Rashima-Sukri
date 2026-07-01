@@ -23,7 +23,7 @@
       background-repeat: no-repeat; background-attachment: fixed;
     }
     #main-container { height: 100vh; width: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; position: relative; z-index: 1; }
-    .full-page { height: 100vh; width: 100%; scroll-snap-align: start; scroll-snap-stop: always; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; }
+    .full-page { height: 100vh; width: 100%; scroll-snap-align: start; scroll-snap-stop: normal; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; }
     
     /* COVER & COMPONENTS */
     #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(253, 251, 247, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: transform 1s ease-in-out; }
@@ -98,7 +98,7 @@
 
     @media (max-width: 600px) {
       body, #main-container, .full-page { height: 100dvh; }
-      #main-container { overflow-anchor: none; }
+      #main-container { overflow-anchor: none; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
       #main-container:focus-within { scroll-snap-type: none; }
       .full-page { scroll-snap-align: start; }
       .card-box { max-height: calc(100dvh - 40px); }
