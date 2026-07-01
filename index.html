@@ -98,7 +98,8 @@
 
     @media (max-width: 600px) {
       body, #main-container, .full-page { height: 100svh; }
-      .card-box { max-height: calc(100svh - 40px); overscroll-behavior: contain; }
+      .full-page { scroll-snap-align: center; }
+      .card-box { max-height: calc(100svh - 40px); }
       #page1 .card-box { overflow-y: hidden; }
       .music-control { top: 14px; right: 14px; bottom: auto; }
     }
