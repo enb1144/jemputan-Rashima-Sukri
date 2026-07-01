@@ -26,8 +26,10 @@
     .full-page { height: 100vh; width: 100%; scroll-snap-align: start; scroll-snap-stop: normal; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; }
     
     /* COVER & COMPONENTS */
-    #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(253, 251, 247, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: transform 1s ease-in-out; }
-    .hide-cover { transform: translateY(-100%); }
+    #cover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(253, 251, 247, 0.85); backdrop-filter: blur(8px); z-index: 9999; display: flex; justify-content: center; align-items: center; text-align: center; opacity: 1; transition: opacity 0.75s ease-out, visibility 0s linear 0.9s; }
+    .cover-content { display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translateZ(0) scale(1); opacity: 1; transform-origin: center center; will-change: transform, opacity; transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.65s ease-out; }
+    #cover.hide-cover { opacity: 0; visibility: hidden; pointer-events: none; }
+    #cover.hide-cover .cover-content { transform: translateZ(0) scale(1.09); opacity: 0; }
     .initials-container { position: relative; height: 250px; width: 180px; margin: 0 auto 10px; pointer-events: none; }
     .big-letter { font-family: 'Cinzel', serif; font-size: 220px; color: #b08d55; position: absolute; opacity: 0.8; text-shadow: 2px 2px 0px rgba(255,255,255,0.8); line-height: 1; }
     .letter-1 { top: 0px; left: -10px; z-index: 1; }
@@ -102,9 +104,7 @@
       #main-container:focus-within { scroll-snap-type: none; }
       .full-page { scroll-snap-align: start; }
       .card-box { max-height: calc(100dvh - 40px); }
-      #page1 { position: sticky; top: 0; z-index: 2; }
-      #page1 .card-box { overflow-y: hidden; will-change: transform, opacity; transform-origin: center center; }
-      #page-rsvp { position: relative; z-index: 3; }
+      #page1 .card-box { overflow-y: hidden; }
       .music-control { top: 14px; right: 14px; bottom: auto; }
     }
 
@@ -124,18 +124,20 @@
 <audio id="bgMusic" loop preload="auto"><source src="lagu.mp3" type="audio/mpeg"></audio>
 
 <div id="cover">
-  <div class="initials-container">
-    <div class="big-letter letter-1">R</div>
-    <div class="big-letter letter-2">S</div>
+  <div class="cover-content">
+    <div class="initials-container">
+      <div class="big-letter letter-1">R</div>
+      <div class="big-letter letter-2">S</div>
+    </div>
+    
+    <div style="font-family: 'Great Vibes', cursive; font-size: 32px; color: #5a4a41; margin-top: -20px; z-index: 3;">
+      Rashima & Sukri
+    </div>
+    <p style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-size: 12px; margin-top: 10px; color: #8c8178;">
+      01 . 01 . 2027
+    </p>
+    <button id="btnOpen" class="btn-open" type="button">Buka Undangan</button>
   </div>
-  
-  <div style="font-family: 'Great Vibes', cursive; font-size: 32px; color: #5a4a41; margin-top: -20px; z-index: 3;">
-    Rashima & Sukri
-  </div>
-  <p style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-size: 12px; margin-top: 10px; color: #8c8178;">
-    01 . 01 . 2027
-  </p>
-  <button id="btnOpen" class="btn-open" type="button">Buka Undangan</button>
 </div>
 
 <div id="musicControl" class="music-control" style="opacity:0;"><i id="musicIcon" class="fas fa-compact-disc"></i></div>
@@ -391,28 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const mainContainer = document.getElementById('main-container');
   const rsvpPage = document.getElementById('page-rsvp');
   const rsvpTextFields = document.querySelectorAll('#guestName, #guestWishes');
-  const mainPageCard = document.querySelector('#page1 .card-box');
   let isPlaying = false;
-  let zoomFramePending = false;
-
-  function updateMainPageZoom() {
-    zoomFramePending = false;
-    if (!mainContainer || !mainPageCard || window.innerWidth > 600) return;
-    const pageHeight = mainContainer.clientHeight || 1;
-    const progress = Math.min(Math.max(mainContainer.scrollTop / (pageHeight * 0.9), 0), 1);
-    mainPageCard.style.transition = 'none';
-    mainPageCard.style.transform = `scale(${1 + (progress * 0.14)})`;
-    mainPageCard.style.opacity = String(1 - progress);
-  }
-
-  if (mainContainer) {
-    mainContainer.addEventListener('scroll', () => {
-      if (!zoomFramePending) {
-        zoomFramePending = true;
-        requestAnimationFrame(updateMainPageZoom);
-      }
-    }, { passive: true });
-  }
 
   function keepRsvpPageInPlace() {
     if (!mainContainer || !rsvpPage || window.innerWidth > 600) return;
