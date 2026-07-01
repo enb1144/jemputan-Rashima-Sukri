@@ -97,9 +97,11 @@
     .btn-yes { background: #4CAF50; } .btn-no { background: #F44336; }
 
     @media (max-width: 600px) {
-      body, #main-container, .full-page { height: 100svh; }
-      .full-page { scroll-snap-align: center; }
-      .card-box { max-height: calc(100svh - 40px); }
+      body, #main-container, .full-page { height: 100dvh; }
+      #main-container { overflow-anchor: none; }
+      #main-container:focus-within { scroll-snap-type: none; }
+      .full-page { scroll-snap-align: start; }
+      .card-box { max-height: calc(100dvh - 40px); }
       #page1 .card-box { overflow-y: hidden; }
       .music-control { top: 14px; right: 14px; bottom: auto; }
     }
@@ -384,7 +386,24 @@ document.addEventListener('DOMContentLoaded', function() {
   const music = document.getElementById('bgMusic');
   const musicControl = document.getElementById('musicControl');
   const musicIcon = document.getElementById('musicIcon');
+  const mainContainer = document.getElementById('main-container');
+  const rsvpPage = document.getElementById('page-rsvp');
+  const rsvpTextFields = document.querySelectorAll('#guestName, #guestWishes');
   let isPlaying = false;
+
+  function keepRsvpPageInPlace() {
+    if (!mainContainer || !rsvpPage || window.innerWidth > 600) return;
+    mainContainer.style.scrollBehavior = 'auto';
+    mainContainer.scrollTop = rsvpPage.offsetTop;
+    requestAnimationFrame(() => { mainContainer.style.scrollBehavior = 'smooth'; });
+  }
+
+  rsvpTextFields.forEach(field => {
+    field.addEventListener('focus', () => {
+      keepRsvpPageInPlace();
+      setTimeout(keepRsvpPageInPlace, 350);
+    });
+  });
 
   if (btnOpen) {
     btnOpen.addEventListener('click', function(e) {
