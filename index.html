@@ -102,7 +102,9 @@
       #main-container:focus-within { scroll-snap-type: none; }
       .full-page { scroll-snap-align: start; }
       .card-box { max-height: calc(100dvh - 40px); }
-      #page1 .card-box { overflow-y: hidden; }
+      #page1 { position: sticky; top: 0; z-index: 2; }
+      #page1 .card-box { overflow-y: hidden; will-change: transform, opacity; transform-origin: center center; }
+      #page-rsvp { position: relative; z-index: 3; }
       .music-control { top: 14px; right: 14px; bottom: auto; }
     }
 
@@ -389,7 +391,28 @@ document.addEventListener('DOMContentLoaded', function() {
   const mainContainer = document.getElementById('main-container');
   const rsvpPage = document.getElementById('page-rsvp');
   const rsvpTextFields = document.querySelectorAll('#guestName, #guestWishes');
+  const mainPageCard = document.querySelector('#page1 .card-box');
   let isPlaying = false;
+  let zoomFramePending = false;
+
+  function updateMainPageZoom() {
+    zoomFramePending = false;
+    if (!mainContainer || !mainPageCard || window.innerWidth > 600) return;
+    const pageHeight = mainContainer.clientHeight || 1;
+    const progress = Math.min(Math.max(mainContainer.scrollTop / (pageHeight * 0.9), 0), 1);
+    mainPageCard.style.transition = 'none';
+    mainPageCard.style.transform = `scale(${1 + (progress * 0.14)})`;
+    mainPageCard.style.opacity = String(1 - progress);
+  }
+
+  if (mainContainer) {
+    mainContainer.addEventListener('scroll', () => {
+      if (!zoomFramePending) {
+        zoomFramePending = true;
+        requestAnimationFrame(updateMainPageZoom);
+      }
+    }, { passive: true });
+  }
 
   function keepRsvpPageInPlace() {
     if (!mainContainer || !rsvpPage || window.innerWidth > 600) return;
