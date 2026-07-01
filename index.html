@@ -101,6 +101,33 @@
     .modal-btn { flex: 1; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
     .btn-yes { background: #4CAF50; } .btn-no { background: #F44336; }
 
+    /* ANIMASI PAGE 1: dimainkan sekali selepas cover selesai */
+    #page1.page1-animate-ready .reveal-fly,
+    #page1.page1-animate-ready .reveal-fade { opacity: 0; }
+    #page1.page1-animate-ready .reveal-fly { transform: translate3d(var(--fly-x, 0), var(--fly-y, 28px), 0); }
+    #page1.page1-animate-ready.intro-sequence .reveal-fly {
+      animation: page1FlyIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: var(--delay, 0s);
+    }
+    #page1.page1-animate-ready.intro-sequence .reveal-fade {
+      animation: page1FadeIn 0.8s ease-out forwards;
+      animation-delay: var(--delay, 0s);
+    }
+    .ceremony-heading, .couple-last { position: relative; border: none !important; }
+    .ceremony-heading::before, .ceremony-heading::after, .couple-last::after {
+      content: ''; position: absolute; left: 0; width: 100%; height: 1px;
+      background: rgba(176, 141, 85, 0.3); opacity: 0;
+    }
+    .ceremony-heading::before { top: 0; }
+    .ceremony-heading::after, .couple-last::after { bottom: 0; }
+    #page1.intro-sequence .ceremony-heading::before,
+    #page1.intro-sequence .ceremony-heading::after,
+    #page1.intro-sequence .couple-last::after {
+      animation: page1FadeIn 1s ease-out forwards; animation-delay: var(--line-delay, 1.25s);
+    }
+    @keyframes page1FlyIn { to { opacity: 1; transform: translate3d(0, 0, 0); } }
+    @keyframes page1FadeIn { to { opacity: 1; } }
+
     @media (max-width: 600px) {
       body, #main-container, .full-page { height: 100dvh; }
       #main-container { overflow-anchor: none; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
@@ -219,73 +246,73 @@
   <section class="full-page" id="page1">
     <div class="card-box" style="text-align: center;"> 
         
-      <img src="bismillah.png" class="bismillah-img" alt="Bismillah">
+      <img src="bismillah.png" class="bismillah-img reveal-fly" style="--delay: 0s; --fly-y: -45px;" alt="Bismillah">
 
-      <div style="font-family: 'Cinzel', serif; font-weight: 600; font-size: 16px; color: #5a4a41; margin-bottom: 15px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 0.18s; --fly-x: -38px; font-family: 'Cinzel', serif; font-weight: 600; font-size: 16px; color: #5a4a41; margin-bottom: 15px; text-align: center;">
         Assalamualaikum & Salam Sejahtera
       </div>
 
-      <div style="font-family: 'Playfair Display', sans-serif; font-size: 12px; color: #666; margin-bottom: 5px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 0.36s; --fly-x: 38px; font-family: 'Playfair Display', sans-serif; font-size: 12px; color: #666; margin-bottom: 5px; text-align: center;">
         Dengan penuh kesyukuran ke hadrat Allah SWT, kami
       </div>
       
-      <div style="font-family: 'Cinzel', serif; font-size: 19px; color: #5a4a41; font-weight: bold; margin-top: 10px; margin-bottom: 10px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 0.54s; --fly-x: -38px; font-family: 'Cinzel', serif; font-size: 19px; color: #5a4a41; font-weight: bold; margin-top: 10px; margin-bottom: 10px; text-align: center;">
         En. Raydun & Pn. Sainah
       </div>
       
-      <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: #666; margin-bottom: 5px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 0.72s; --fly-x: 34px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: #666; margin-bottom: 5px; text-align: center;">
         Seikhlas hati menjemput
       </div>
 
-      <div style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; color: #5a4a41; margin-bottom: 20px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 0.9s; --fly-x: -34px; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; color: #5a4a41; margin-bottom: 20px; text-align: center;">
         Tuan / Puan / Encik / Cik ke
       </div>
       
-      <div style="font-family: 'Cinzel', serif; font-size: 17px; color: #b08d55; font-weight: 600; letter-spacing: 2px; margin-bottom: 10px; border-top: 1px solid rgba(176, 141, 85, 0.3); border-bottom: 1px solid rgba(176, 141, 85, 0.3); padding: 10px 0; text-align: center;">
-        MAJLIS PERKAHWINAN
+      <div class="ceremony-heading" style="--line-delay: 1.05s; font-family: 'Cinzel', serif; font-size: 17px; color: #b08d55; font-weight: 600; letter-spacing: 2px; margin-bottom: 10px; border-top: 1px solid rgba(176, 141, 85, 0.3); border-bottom: 1px solid rgba(176, 141, 85, 0.3); padding: 10px 0; text-align: center;">
+        <span class="reveal-fly" style="--delay: 1.08s; --fly-y: 24px; display: inline-block;">MAJLIS PERKAHWINAN</span>
       </div>
       
-      <div style="font-family: 'Playfair Display', cursive; font-size: 12px; color: #666; line-height: 1.2; margin: 3px 0 6px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 1.26s; --fly-x: -30px; font-family: 'Playfair Display', cursive; font-size: 12px; color: #666; line-height: 1.2; margin: 3px 0 6px; text-align: center;">
         Puteri kami
       </div>
 
-      <div style="font-family: 'Great Vibes', cursive; font-size: 38px; color: #b08d55; line-height: 1; margin: 0; text-align: center;">
+      <div class="reveal-fly" style="--delay: 1.44s; --fly-x: 38px; font-family: 'Great Vibes', cursive; font-size: 38px; color: #b08d55; line-height: 1; margin: 0; text-align: center;">
         Rashima
       </div>
 
-      <div style="font-family: 'Playfair Display', serif; font-size: 28px; color: #9b6e33; line-height: 1; margin: -2px 0 5px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 1.62s; --fly-y: 25px; font-family: 'Playfair Display', serif; font-size: 28px; color: #9b6e33; line-height: 1; margin: -2px 0 5px; text-align: center;">
         &
       </div>
 
-      <div style="font-family: 'Playfair Display', cursive; font-size: 12px; color: #666; line-height: 1.2; margin: 2px 0 6px; text-align: center;">
+      <div class="reveal-fly" style="--delay: 1.8s; --fly-x: -30px; font-family: 'Playfair Display', cursive; font-size: 12px; color: #666; line-height: 1.2; margin: 2px 0 6px; text-align: center;">
         Pasangannya
       </div>
 
-      <div style="font-family: 'Great Vibes', cursive; font-size: 38px; color: #b08d55; line-height: 1.15; margin: 0 0 8px -9px; padding-bottom: 6px; border-bottom: 1px solid rgba(176, 141, 80, 0.3); text-align: center;">
+      <div class="reveal-fly couple-last" style="--delay: 1.98s; --fly-x: 38px; --line-delay: 2.08s; font-family: 'Great Vibes', cursive; font-size: 38px; color: #b08d55; line-height: 1.15; margin: 0 0 8px -9px; padding-bottom: 6px; border-bottom: 1px solid rgba(176, 141, 80, 0.3); text-align: center;">
         Sukri
       </div>
 
-       <div style="font-family: 'Cinzel', sans-serif; font-size: 14px; font-weight: bold; color: #f38b4e; margin-top: 5px; margin-bottom: 10px; text-align: center;">
+       <div class="reveal-fade" style="--delay: 2.45s; font-family: 'Cinzel', sans-serif; font-size: 14px; font-weight: bold; color: #f38b4e; margin-top: 5px; margin-bottom: 10px; text-align: center;">
         ATURCARA MAJLIS
       </div>
 
-      <div style="font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: bold; color: #5a4a41; margin-bottom: 8px; text-align: center;">
+      <div class="reveal-fade" style="--delay: 2.7s; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: bold; color: #5a4a41; margin-bottom: 8px; text-align: center;">
         Jumaat, 01 Januari 2027
       </div>
 
-      <div style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; font-weight: bold; margin-bottom: 15px; text-align: center;">
+      <div class="reveal-fade" style="--delay: 2.95s; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; font-weight: bold; margin-bottom: 15px; text-align: center;">
         2:00 PM - 6:00 PM
       </div>
       
-      <div class="arrival-text" style="font-family: 'Montserrat', sans-serif; font-size: 14px; margin-top: -10px; margin-bottom: 1px; text-align: center;">
+      <div class="arrival-text reveal-fade" style="--delay: 3.2s; font-family: 'Montserrat', sans-serif; font-size: 14px; margin-top: -10px; margin-bottom: 1px; text-align: center;">
         🤵🏻👰🏻 Ketibaan Mempelai: 2:30PM
       </div>
 
-      <div style="font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; margin-top: 15px; text-align: center;">
+      <div class="reveal-fade" style="--delay: 3.45s; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 14px; margin-top: 15px; text-align: center;">
         Dewan SJKC Yuk Kong, Keningau, Sabah
       </div>
       
-      <div class="action-row">
+      <div class="action-row reveal-fade" style="--delay: 3.7s;">
         <button type="button" class="action-btn" onclick="openContactModal()">
           <i class="fas fa-phone"></i> Hubungi
         </button>
@@ -297,13 +324,13 @@
         </button>
       </div>
 
-      <div style="margin-top: 10px; font-size: 11px; color: #b08d55; text-align: center; font-family: 'Montserrat', sans-serif;">
+      <div class="reveal-fade" style="--delay: 3.95s; margin-top: 10px; font-size: 11px; color: #b08d55; text-align: center; font-family: 'Montserrat', sans-serif;">
         Menghitung Hari:
         <span id="countdown" style="font-weight:bold; color:#5a4a41;">Loading...</span>
       </div>
 
     </div>
-    <div class="scroll-hint"><i class="fas fa-chevron-down"></i> Scroll Ke Bawah</div>
+    <div class="scroll-hint reveal-fade" style="--delay: 4.2s;"><i class="fas fa-chevron-down"></i> Scroll Ke Bawah</div>
   </section>
 
   <section class="full-page" id="page-rsvp">
@@ -395,9 +422,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const musicControl = document.getElementById('musicControl');
   const musicIcon = document.getElementById('musicIcon');
   const mainContainer = document.getElementById('main-container');
+  const page1 = document.getElementById('page1');
   const rsvpPage = document.getElementById('page-rsvp');
   const rsvpTextFields = document.querySelectorAll('#guestName, #guestWishes');
   let isPlaying = false;
+  let pageIntroTriggered = false;
+
+  if (page1) page1.classList.add('page1-animate-ready');
 
   function keepRsvpPageInPlace() {
     if (!mainContainer || !rsvpPage || window.innerWidth > 600) return;
@@ -416,10 +447,13 @@ document.addEventListener('DOMContentLoaded', function() {
   if (btnOpen) {
     btnOpen.addEventListener('click', function(e) {
       e.preventDefault();
+      if (pageIntroTriggered) return;
+      pageIntroTriggered = true;
       cover.classList.add('hide-cover');
       document.getElementById('main-container').scrollTop = 0;
       setTimeout(() => { musicControl.style.opacity = 1; }, 800);
       setTimeout(() => { document.getElementById('page1').classList.add('active'); }, 500);
+      setTimeout(() => { if (page1) page1.classList.add('intro-sequence'); }, 1750);
       if (music) {
         music.play().then(() => { isPlaying = true; musicIcon.classList.add('spin'); })
         .catch(err => { musicIcon.classList.remove('spin'); musicIcon.classList.add('fa-volume-mute'); });
